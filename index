@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diploma Musical</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+    body {
+      font-family: 'Garamond', serif;
+      background: #fdfaf3;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    #quiz {
+      background: #fff;
+      border: 10px solid #d4af37;
+      padding: 40px;
+      width: 100%;
+      max-width: 800px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      border-radius: 8px;
+    }
+    .question {
+      font-size: 1.4em;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    .option {
+      display: block;
+      margin: 12px 0;
+      padding: 12px;
+      background: #fdf6e3;
+      border: 1px solid #c2b280;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: background 0.3s;
+    }
+    .option:hover {
+      background: #f0e6c8;
+    }
+    .result {
+      font-size: 1.4em;
+      font-weight: normal;
+      margin-bottom: 20px;
+      color: #6d4c41;
+    }
+    .certificate-title {
+      font-size: 1.8em;
+      font-weight: bold;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+    .intro-title {
+      font-size: 2em;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    .intro-text {
+      font-size: 1.1em;
+      margin-bottom: 30px;
+    }
+    .start-button {
+      padding: 10px 20px;
+      font-size: 1em;
+      background-color: #d4af37;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .start-button:hover {
+      background-color: #c19d2b;
+    }
+    .final-image {
+      display: block;
+      margin: 20px auto 0 auto;
+      height: 60vh;
+      width: auto;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+    .download-button {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 12px 24px;
+      font-family: 'Garamond', serif;
+      font-size: 1em;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #6d4c41;
+      background-color: #fff;
+      border: 2px solid #d4af37;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    .download-button:hover {
+      background-color: #f8f1d8;
+    }
+  </style>
+</head>
+<body>
+  <div id="quiz">
+    <div class="intro">
+      <div class="intro-title">Evaluación Final Extraordinaria</div>
+      <div class="intro-text">
+        Con motivo de tu inminente graduación en arquitectura, la Junta Académica de FADU y el estudio de diseño Wise Studio han decidido convocarte a una última prueba. No se trata de evaluar tus conocimientos sobre la materia, sino de descubrir cuál es la recompensa ideal tras tanto esfuerzo.<br><br>
+        La naturaleza de esta prueba es, por supuesto, informativa. Responde de forma razonada y consciente: tu futuro depende de ello.
+      </div>
+      <button class="start-button" onclick="startQuiz()">Comenzar examen final</button>
+    </div>
+  </div>
+  <script>
+    const questions = [
+      {
+        text: "Prefieres conciertos con:",
+        options: [
+          { text: "la banda, tú y un perro", value: "isla" },
+          { text: "la gente que va en el 19 en hora punta", value: "elmató" },
+          { text: "todos los argentinos que han emigrado a Barcelona", value: "babasonicos" },
+        ]
+      },
+      {
+        text: "Te gusta más:",
+        options: [
+          { text: "el pop psicodélico elegante y melancólico con una atmósfera urbana que invita a la ensoñación", value: "isla" },
+          { text: "el rock alternativo directo y emocional con letras que capturan lo cotidiano desde una épica íntima y generacional", value: "elmató" },
+          { text: "pop rock sofisticado y camaleónico que baila al borde entre lo provocador y lo elegante", value: "babasonicos" },
+        ]
+      },
+      {
+        text: "Elige tu pack favorito:",
+        options: [
+          { text: "Tame Impala – Bandalos Chinos - Mac DeMarco", value: "isla" },
+          { text: "Soda Stereo - Pixies - Los Planetas", value: "elmató" },
+          { text: "Gustavo Cerati - Café Tacvba – David Bowie", value: "babasonicos" },
+        ]
+      },
+    ];
+
+    const tiebreaker = {
+      text: "Qué prefieres.",
+      options: [
+        { text: "Una isla llena de rostros conocidos", value: "isla" },
+        { text: "Una persecución policial que acaba mal", value: "elmató" },
+        { text: "Un gurú hindú tremendamente veloz", value: "babasonicos" },
+      ]
+    };
+
+    const resultsText = {
+      isla: {
+        text: "Por la presente se certifica que la graduada ha sido oficialmente invitada al concierto de Isla de Caras.",
+        img: "https://cdn.discordapp.com/attachments/1354818156891476123/1363687591869808761/IslaDeCaras_Invitacion.jpg?ex=6806f089&is=68059f09&hm=25f63eb0a7207cdb35eeff13eb3645037864a910323f75aee876aa79de4d899d&"
+      },
+      "elmató": {
+        text: "Por la presente se certifica que la graduada ha sido oficialmente invitada al concierto de Él Mató a un Policía Motorizado.",
+        img: "https://cdn.discordapp.com/attachments/1354818156891476123/1363687591408566362/ElMatoaunPoliciaMotorizado_Invitacion.jpg?ex=6806f089&is=68059f09&hm=32a8f0c74b1a6eb3f9963062f02e5ed779493cd016ed8bca92eaaabd4295d5f8&"
+      },
+      babasonicos: {
+        text: "Por la presente se certifica que la graduada ha sido oficialmente invitada al concierto de Babasónicos.",
+        img: "https://cdn.discordapp.com/attachments/1354818156891476123/1363687592570261554/Babasonicos_Invitacion.jpg?ex=6806f08a&is=68059f0a&hm=33c23ceacfeb884741dba753821ed1d54212e5564d66fe66349140460ee4e357&"
+      }
+    };
+
+    const quizContainer = document.getElementById("quiz");
+    let current = 0;
+    let answers = [];
+
+    function startQuiz() {
+      current = 0;
+      answers = [];
+      showQuestion(questions[current]);
+    }
+
+    function showQuestion(q) {
+      quizContainer.innerHTML = `<div class="question">${q.text}</div>`;
+      q.options.forEach(opt => {
+        const btn = document.createElement("div");
+        btn.className = "option";
+        btn.textContent = opt.text;
+        btn.onclick = () => handleAnswer(opt.value);
+        quizContainer.appendChild(btn);
+      });
+    }
+
+    function handleAnswer(value) {
+      answers.push(value);
+      current++;
+      if (current < questions.length) {
+        showQuestion(questions[current]);
+      } else {
+        const tally = answers.reduce((acc, val) => {
+          acc[val] = (acc[val] || 0) + 1;
+          return acc;
+        }, {});
+        const topScore = Math.max(...Object.values(tally));
+        const top = Object.keys(tally).filter(k => tally[k] === topScore);
+        if (top.length === 1) {
+          showResult(top[0]);
+        } else {
+          showTiebreaker(top);
+        }
+      }
+    }
+
+    function showTiebreaker(top) {
+      quizContainer.innerHTML = `<div class="question">${tiebreaker.text}</div>`;
+      tiebreaker.options.filter(opt => top.includes(opt.value)).forEach(opt => {
+        const btn = document.createElement("div");
+        btn.className = "option";
+        btn.textContent = opt.text;
+        btn.onclick = () => showResult(opt.value);
+        quizContainer.appendChild(btn);
+      });
+    }
+
+    function showResult(value) {
+      const result = resultsText[value];
+      const pdfLinks = {
+        isla: "https://drive.google.com/file/d/1e04IpTIefEQYM-ZVLjdVZuWRaoHrMJwH/view?usp=drive_link",
+        "elmató": "https://drive.google.com/file/d/1WlcVZUrdnw60XYszQtgQZUJbB4AhQCvc/view?usp=drive_link",
+        babasonicos: "https://drive.google.com/file/d/1OS3mDgPY-Xi-yys79h80qn9z2EL_JiNX/view?usp=drive_link"
+      };
+      const downloadButton = `<a href="${pdfLinks[value]}" target="_blank" class="download-button">Descargar invitación en PDF</a>`;
+
+      quizContainer.innerHTML = `
+        <div class="certificate-title">Certificado de Invitación Musical</div>
+        <div class="result">${result.text}</div>
+        <img class="final-image" src="${result.img}" alt="${value}" />
+        ${downloadButton}
+      `;
+    }
+  </script>
+</body>
+</html>
